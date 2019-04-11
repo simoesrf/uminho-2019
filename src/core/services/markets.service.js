@@ -1,13 +1,11 @@
 import { get } from "./firebase.service";
-import { getEvents } from "./events.service";
 import { MarketModel } from "../models/market.model";
 import { RunnerModel } from "../models/runner.model";
 
-const getMarkets = async () => {
-    const events = await getEvents();
-    const markets = await get("markets");
+const getMarkets = async (events) => {
+    const rawDataMarkets = await get("markets");
 
-    return markets.map(({ id, name, eventId, marketType, status, runners }) => {
+    return rawDataMarkets.map(({ id, name, eventId, marketType, status, runners }) => {
         const event = events.find(event => event.getId() === eventId);
         const runnersList = runners.map(
             ({ selectionId, type, odds }) => new RunnerModel(selectionId, type, odds)

@@ -7,16 +7,29 @@ import { NavigationBar } from "./components/navigation-bar/navigation-bar.compon
 import { Homepage } from "./pages/home.page";
 import { LandingPage } from "./pages/landing.page";
 import { BetPocketComponent } from "./components/bet-pocket/bet-pocket.component";
-import { getCountries } from "./core/core.api";
+import { DataStore } from "./core/data-store";
 
 class App extends React.PureComponent {
     state = {
-        countries: []
+        countries: [],
+        bets: []
+    };
+
+    updateState = async () => {
+        console.log("Updating data in App Component");
+        const store = await DataStore.getInstance();
+        this.setState({ countries: store.getCountries() });
+        console.log("Data updated in App Component");
     };
 
     componentDidMount = async () => {
-        const countries = await getCountries();
-        this.setState({ countries });
+        DataStore.register(this.updateState);
+        await this.updateState();
+    };
+
+    addBet = runnerId => {
+        console.log("Added ", runnerId);
+        // this.setState(prevBets => ({ bets: [...prevBets, runnerId] }));
     };
 
     render() {
@@ -31,17 +44,16 @@ class App extends React.PureComponent {
                     </div>
                 </header>
                 <main className="main-container">
-                    <Route path="/" exact component={Homepage} />
-                    <Route exact path="/countries/:country" component={LandingPage} />
+                    <Route path="/" exact component={props => <Homepage {...props} onAddBet={this.addBet} />} />
+                    <Route
+                        exact
+                        path="/countries/:country"
+                        component={props => <LandingPage {...props} onAddBet={this.addBet} />}
+                    />
                     <Route
                         path="/countries/:country/events"
                         exact
-                        component={LandingPage}
-                    />
-                    <Route
-                        path="/countries/:country/events/:event"
-                        exact
-                        component={LandingPage}
+                        component={props => <LandingPage {...props} onAddBet={this.addBet} />}
                     />
                 </main>
             </div>

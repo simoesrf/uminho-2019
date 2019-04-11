@@ -8,118 +8,75 @@ import { MarketComponent } from "../components/market/market.component";
 import { CompetitionComponent } from "../components/competition/competition.component";
 import { BetButtonComponent } from "../components/bet-button/bet-button.component";
 
-import {
-    getEvents,
-    getMarkets,
-    getCompetitions,
-    getEventsByCompetition,
-    getEventsMatchOddsMarkets,
-    getCompetitionsByCountry,
-    getCountries
-} from "../core/core.api";
+import { DataStore } from "../core/data-store";
 
 class LandingPage extends React.PureComponent {
     state = {
-        events: [],
-        markets: [],
-        country: null,
-        countries: [],
         competitions: []
     };
 
     componentDidMount = async () => {
-        const {
-            match: { params }
-        } = this.props;
-        const events = await getEvents();
-        const markets = await getMarkets();
-        const countries = await getCountries();
-        const competitionsData = await getCompetitions();
-
-        const country = countries.find(
-            country => country.getId() === params.country
-        );
-        const competitions = getCompetitionsByCountry(
-            country,
-            competitionsData
-        );
+        const instance = await DataStore.getInstance();
 
         this.setState({
-            events,
-            markets,
-            country,
-            countries,
-            competitions
-        });
-    };
-
-    componentDidUpdate = async () => {
-        const {
-            match: { params }
-        } = this.props;
-        const { country: prevCountry, countries } = this.state;
-
-        if (!prevCountry || prevCountry.getId() === params.country) {
-            return null;
-        }
-
-        const competitionsData = await getCompetitions();
-        const country = countries.find(
-            country => country.getId() === params.country
-        );
-        const competitions = getCompetitionsByCountry(
-            country,
-            competitionsData
-        );
-
-        this.setState({
-            country,
-            competitions
+            competitions: instance.getCompetitions()
         });
     };
 
     render() {
-        const { events, markets, competitions } = this.state;
+        const {
+            onAddBet,
+            match: { params }
+        } = this.props;
+        const { competitions } = this.state;
 
-        return competitions.map(competition => {
-            const competitionEvents = getEventsByCompetition(competition, events);
-            const eventMarkets = getEventsMatchOddsMarkets(
-                competitionEvents,
-                markets
-            );
+        return competitions
+            .filter(
+                competition =>
+                    competition.getCountry().getId() === params.country
+            )
+            .map(competition => {
+                const markets = competition
+                    .getEvents()
+                    .reduce(
+                        (acc, event) => [...acc, ...event.getMarkets()],
+                        []
+                    );
 
-            return (
-                <CompetitionComponent
-                    key={competition.getId()}
-                    name={competition.getName()}
-                >
-                    <MarketsComponent>
-                        <MarketTypesComponent
-                            types={
-                                (eventMarkets[0] &&
-                                    eventMarkets[0]
-                                        .getRunners()
-                                        .map(runner => runner.getType())) ||
-                                []
-                            }
-                        />
-                        {eventMarkets.map(eventMarket => (
-                            <MarketComponent
-                                key={eventMarket.getId()}
-                                name={eventMarket.getName()}
-                            >
-                                {eventMarket.getRunners().map(runner => (
-                                    <BetButtonComponent
-                                        key={runner.getId()}
-                                        odd={runner.getOdds()}
-                                    />
-                                ))}
-                            </MarketComponent>
-                        ))}
-                    </MarketsComponent>
-                </CompetitionComponent>
-            );
-        });
+                return (
+                    <CompetitionComponent
+                        key={competition.getId()}
+                        name={competition.getName()}
+                    >
+                        <MarketsComponent>
+                            <MarketTypesComponent
+                                types={
+                                    (markets[0] &&
+                                        markets[0]
+                                            .getRunners()
+                                            .map(runner => runner.getType())) ||
+                                    []
+                                }
+                            />
+                            {markets.map(market => (
+                                <MarketComponent
+                                    key={market.getId()}
+                                    name={market.getName()}
+                                >
+                                    {market.getRunners().map(runner => (
+                                        <BetButtonComponent
+                                            onClick={onAddBet}
+                                            key={runner.getId()}
+                                            id={runner.getId()}
+                                            odd={runner.getOdds()}
+                                        />
+                                    ))}
+                                </MarketComponent>
+                            ))}
+                        </MarketsComponent>
+                    </CompetitionComponent>
+                );
+            });
     }
 }
 

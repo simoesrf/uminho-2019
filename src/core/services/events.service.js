@@ -1,12 +1,10 @@
 import { get } from "./firebase.service";
 import { EventModel } from "../models/event.model";
-import { getCompetitions } from "./competitions.service";
 
-const getEvents = async () => {
-    const events = await get("events");
-    const competitions = await getCompetitions();
+const getEvents = async (competitions) => {
+    const rawDataEvents = await get("events");
 
-    return events.map(({ id, name, status, startTime, competitionId }) => {
+    return rawDataEvents.map(({ id, name, status, startTime, competitionId }) => {
         const competition = competitions.find(
             competition => competition.getId() === competitionId
         );
