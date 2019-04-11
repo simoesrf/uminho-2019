@@ -25,7 +25,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 - https://developer.mozilla.org/en-US/docs/Web/HTML
 
-## CSS
+## CSS & SASS
 
 - https://developer.mozilla.org/en-US/docs/Web/CSS
 - https://necolas.github.io/normalize.css
@@ -35,9 +35,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
-## React
+## React & JSX
 
 - https://reactjs.org/
+- https://reactjs.org/docs/jsx-in-depth.html
 - https://reactjs.org/docs/getting-started.html
 - https://facebook.github.io/create-react-app/docs/getting-started
 
