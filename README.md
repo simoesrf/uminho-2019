@@ -40,7 +40,17 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - https://reactjs.org/
 - https://reactjs.org/docs/jsx-in-depth.html
 - https://reactjs.org/docs/getting-started.html
+- http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
 - https://facebook.github.io/create-react-app/docs/getting-started
+
+## Redux
+
+- https://redux.js.org/
+
+## React-Router
+
+- https://reacttraining.com/react-router/web/guides/quick-start
+
 
 ## Tests
 
