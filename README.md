@@ -12,7 +12,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 1. Event filter (where I can filter for a team/selection name)
 2. Data refresh button
-3. Automated data refresh every 10 seconds
+3. Automated data refresh every 20 seconds
 4. Betpocket (top right corner)
   Every time I click on a bet, the bet is added to the betpocket.
   Then, on the betpocket I add the stake (money) and place the bet.
@@ -50,6 +50,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 # Other
 
 - https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+- https://firebase.google.com/
 - https://jsonplaceholder.typicode.com/
 
 
