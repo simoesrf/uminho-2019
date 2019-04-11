@@ -1,5 +1,73 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# Data available
+
+- Countries
+- Competitions
+- Events
+- Markets
+- Runners
+
+# Proposed Next Steps
+
+1. Event filter (where I can filter for a team/selection name)
+2. Data refresh button
+3. Automated data refresh every 20 seconds
+4. Betpocket (top right corner)
+  Every time I click on a bet, the bet is added to the betpocket.
+  Then, on the betpocket I add the stake (money) and place the bet.
+5. Event page
+
+
+# Resources
+
+## HTML
+
+- https://developer.mozilla.org/en-US/docs/Web/HTML
+
+## CSS & SASS
+
+- https://developer.mozilla.org/en-US/docs/Web/CSS
+- https://necolas.github.io/normalize.css
+- https://sass-lang.com/guide
+
+## Javscript
+
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript
+
+## React & JSX
+
+- https://reactjs.org/
+- https://reactjs.org/docs/jsx-in-depth.html
+- https://reactjs.org/docs/getting-started.html
+- http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
+- https://facebook.github.io/create-react-app/docs/getting-started
+
+## Redux
+
+- https://redux.js.org/
+
+## React-Router
+
+- https://reacttraining.com/react-router/web/guides/quick-start
+
+
+## Tests
+
+- https://facebook.github.io/create-react-app/docs/running-tests
+- https://jestjs.io/docs/en/tutorial-react
+- https://airbnb.io/enzyme/
+
+# Other
+
+- https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+- https://firebase.google.com/
+- https://jsonplaceholder.typicode.com/
+
+
+
+# Development
+
 ## Available Scripts
 
 In the project directory, you can run:
