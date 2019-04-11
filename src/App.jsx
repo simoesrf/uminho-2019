@@ -14,9 +14,16 @@ class App extends React.PureComponent {
         countries: []
     };
 
-    componentDidMount = async () => {
+    updateState = async () => {
+        console.log("Updating data in App Component");
         const store = await DataStore.getInstance();
         this.setState({ countries: store.getCountries() });
+        console.log("Data updated in App Component");
+    }
+
+    componentDidMount = async () => {
+        DataStore.register(this.updateState);
+        await this.updateState();
     };
 
     render() {

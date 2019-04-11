@@ -4,6 +4,7 @@ import { getEvents } from "./services/events.service";
 import { getMarkets } from "./services/markets.service";
 
 let instance;
+let callbacks = [];
 
 class DataStore {
     constructor(events, markets, countries, competitions) {
@@ -65,6 +66,14 @@ class DataStore {
         return new DataStore(events, markets, countries, competitions);
     }
 
+    static async register(callback) {
+        callbacks.push(callback);
+    }
+
+    static async update() {
+        callbacks.forEach((callback) => callback());
+    }
+
     static async destroy() {
         instance = undefined;
     }
@@ -93,5 +102,7 @@ class DataStore {
         return [...this._competitions];
     }
 }
+
+window.triggerUpdate = DataStore.update;
 
 export { DataStore };
