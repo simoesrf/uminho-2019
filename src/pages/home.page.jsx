@@ -5,14 +5,8 @@ import { MarketTypesComponent } from "../components/market/market-types.componen
 import { MarketComponent } from "../components/market/market.component";
 import { CompetitionComponent } from "../components/competition/competition.component";
 import { BetButtonComponent } from "../components/bet-button/bet-button.component";
+import { DataStore } from "../core/data-store";
 
-import {
-    getEvents,
-    getMarkets,
-    getCompetitions,
-    getEventsByCompetition,
-    getEventsMatchOddsMarkets
-} from "../core/core.api";
 
 class Homepage extends React.PureComponent {
     state = {
@@ -22,23 +16,20 @@ class Homepage extends React.PureComponent {
     };
 
     componentDidMount = async () => {
-        const events = await getEvents();
-        const markets = await getMarkets();
-        const competitions = await getCompetitions();
+        const instance = await DataStore.getInstance();
 
-        this.setState({ events, markets, competitions });
+        this.setState({ 
+            events: instance.getEvents(), 
+            markets: instance.getMarkets(), 
+            competitions: instance.getCompetitions()
+         });
     };
 
     render() {
-        const { events, markets, competitions } = this.state;
+        const { competitions } = this.state;
 
         return competitions.map(competition => {
-            const competitionEvents = getEventsByCompetition(competition, events);
-
-            const eventMarkets = getEventsMatchOddsMarkets(
-                competitionEvents,
-                markets
-            );
+            const markets = competition.getEvents().reduce((acc, event) => [...acc, ...event.getMarkets()], []);
 
             return (
                 <CompetitionComponent
@@ -48,19 +39,19 @@ class Homepage extends React.PureComponent {
                     <MarketsComponent>
                         <MarketTypesComponent
                             types={
-                                (eventMarkets[0] &&
-                                    eventMarkets[0]
+                                (markets[0] &&
+                                    markets[0]
                                         .getRunners()
                                         .map(runner => runner.getType())) ||
                                 []
                             }
                         />
-                        {eventMarkets.map(eventMarket => (
+                        {markets.map(market => (
                             <MarketComponent
-                                key={eventMarket.getId()}
-                                name={eventMarket.getName()}
+                                key={market.getId()}
+                                name={market.getName()}
                             >
-                                {eventMarket.getRunners().map(runner => (
+                                {market.getRunners().map(runner => (
                                     <BetButtonComponent
                                         key={runner.getId()}
                                         odd={runner.getOdds()}

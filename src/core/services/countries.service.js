@@ -5,8 +5,8 @@ const buildCountryModel = ({ id, name, locale, language, flag }) =>
     new CountryModel(id, name, locale, language, flag);
 
 const getCountries = async () => {
-    const countries = await get("countries");
-    return countries.map(buildCountryModel);
+    const rawDataCountries = await get("countries");
+    return rawDataCountries.map(buildCountryModel);
 };
 
 export { getCountries };

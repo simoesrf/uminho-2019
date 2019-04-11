@@ -4,8 +4,8 @@ import { getCountries } from "./services/countries.service";
 import { getCompetitions } from "./services/competitions.service";
 import { MARKET_TYPES } from "./models/market.model";
 
-const getCompetitionsByCountry = (country, competitions) =>
-    competitions.filter(
+const getCompetitionsByCountry = (country, markets) =>
+    markets.filter(
         competition => competition.getCountry().getId() === country.getId()
     );
 

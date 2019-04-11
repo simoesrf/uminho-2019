@@ -7,7 +7,7 @@ import { NavigationBar } from "./components/navigation-bar/navigation-bar.compon
 import { Homepage } from "./pages/home.page";
 import { LandingPage } from "./pages/landing.page";
 import { BetPocketComponent } from "./components/bet-pocket/bet-pocket.component";
-import { getCountries } from "./core/core.api";
+import { DataStore } from "./core/data-store";
 
 class App extends React.PureComponent {
     state = {
@@ -15,8 +15,8 @@ class App extends React.PureComponent {
     };
 
     componentDidMount = async () => {
-        const countries = await getCountries();
-        this.setState({ countries });
+        const store = await DataStore.getInstance();
+        this.setState({ countries: store.getCountries() });
     };
 
     render() {

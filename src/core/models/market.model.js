@@ -8,7 +8,7 @@ const MARKET_TYPES = {
 };
 
 class MarketModel {
-    constructor(id, name, event, type, status, runners) {
+    constructor(id, name, event, type, status, runners = []) {
         this._id = id;
         this._name = name;
         this._event = event;
@@ -52,7 +52,7 @@ class MarketModel {
                 event: this.getEvent().toObject(),
                 type: this.getStatus(),
                 status: this.getType(),
-                runners: this.getRunners().toObject()
+                runners: this.getRunners().map(runner => runner.toObject())
             }
         );
     }
