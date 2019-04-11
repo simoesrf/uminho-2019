@@ -11,7 +11,8 @@ import { DataStore } from "./core/data-store";
 
 class App extends React.PureComponent {
     state = {
-        countries: []
+        countries: [],
+        bets: []
     };
 
     updateState = async () => {
@@ -19,11 +20,16 @@ class App extends React.PureComponent {
         const store = await DataStore.getInstance();
         this.setState({ countries: store.getCountries() });
         console.log("Data updated in App Component");
-    }
+    };
 
     componentDidMount = async () => {
         DataStore.register(this.updateState);
         await this.updateState();
+    };
+
+    addBet = runnerId => {
+        console.log("Added ", runnerId);
+        // this.setState(prevBets => ({ bets: [...prevBets, runnerId] }));
     };
 
     render() {
@@ -38,17 +44,16 @@ class App extends React.PureComponent {
                     </div>
                 </header>
                 <main className="main-container">
-                    <Route path="/" exact component={Homepage} />
-                    <Route exact path="/countries/:country" component={LandingPage} />
+                    <Route path="/" exact component={props => <Homepage {...props} onAddBet={this.addBet} />} />
+                    <Route
+                        exact
+                        path="/countries/:country"
+                        component={props => <LandingPage {...props} onAddBet={this.addBet} />}
+                    />
                     <Route
                         path="/countries/:country/events"
                         exact
-                        component={LandingPage}
-                    />
-                    <Route
-                        path="/countries/:country/events/:event"
-                        exact
-                        component={LandingPage}
+                        component={props => <LandingPage {...props} onAddBet={this.addBet} />}
                     />
                 </main>
             </div>

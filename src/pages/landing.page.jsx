@@ -25,6 +25,7 @@ class LandingPage extends React.PureComponent {
 
     render() {
         const {
+            onAddBet,
             match: { params }
         } = this.props;
         const { competitions } = this.state;
@@ -64,7 +65,9 @@ class LandingPage extends React.PureComponent {
                                 >
                                     {market.getRunners().map(runner => (
                                         <BetButtonComponent
+                                            onClick={onAddBet}
                                             key={runner.getId()}
+                                            id={runner.getId()}
                                             odd={runner.getOdds()}
                                         />
                                     ))}

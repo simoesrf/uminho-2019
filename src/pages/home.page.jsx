@@ -7,7 +7,6 @@ import { CompetitionComponent } from "../components/competition/competition.comp
 import { BetButtonComponent } from "../components/bet-button/bet-button.component";
 import { DataStore } from "../core/data-store";
 
-
 class Homepage extends React.PureComponent {
     state = {
         events: [],
@@ -18,18 +17,21 @@ class Homepage extends React.PureComponent {
     componentDidMount = async () => {
         const instance = await DataStore.getInstance();
 
-        this.setState({ 
-            events: instance.getEvents(), 
-            markets: instance.getMarkets(), 
+        this.setState({
+            events: instance.getEvents(),
+            markets: instance.getMarkets(),
             competitions: instance.getCompetitions()
-         });
+        });
     };
 
     render() {
+        const { onAddBet } = this.props;
         const { competitions } = this.state;
 
         return competitions.map(competition => {
-            const markets = competition.getEvents().reduce((acc, event) => [...acc, ...event.getMarkets()], []);
+            const markets = competition
+                .getEvents()
+                .reduce((acc, event) => [...acc, ...event.getMarkets()], []);
 
             return (
                 <CompetitionComponent
@@ -53,7 +55,9 @@ class Homepage extends React.PureComponent {
                             >
                                 {market.getRunners().map(runner => (
                                     <BetButtonComponent
+                                        onClick={onAddBet}
                                         key={runner.getId()}
+                                        id={runner.getId()}
                                         odd={runner.getOdds()}
                                     />
                                 ))}
